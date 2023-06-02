@@ -10,11 +10,14 @@ import {
 import { TopBar } from "../molecules/TopBar";
 import { CustomDropdown } from "../atoms/CustomDropdown";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { scheduleAccordionActiveState, selectedYearState } from "@/states/states";
+import {
+  scheduleAccordionActiveState,
+  selectedYearState,
+} from "@/states/states";
 import { CustomButton } from "../atoms/CustomButton";
 import { Accordion } from "react-bootstrap";
 import { accordionCustomStyle } from "../molecules/CustomMolecules";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Diary({ serverData }: { serverData: any[] }) {
   const setSelectedYear = useSetRecoilState(selectedYearState);
@@ -42,7 +45,16 @@ export default function Diary({ serverData }: { serverData: any[] }) {
       <DefaultRow>
         <DefaultCol>
           <CustomButton
-            onClick={() => {}}
+            onClick={() => {
+              const params = new URLSearchParams();
+              params.set("text","content123");
+              params.set("title", "title123");
+              params.set("weather", "sunny");
+              params.set("id", "12312312");
+              params.set("date", "2023-01-01");
+              const url = "/write?" + params.toString();
+              router.push(url);
+            }}
           >
             {l("Write")}
           </CustomButton>
@@ -50,15 +62,14 @@ export default function Diary({ serverData }: { serverData: any[] }) {
       </DefaultRow>
       <DefaultRow>
         <Accordion defaultActiveKey={scheduleAccordionActive}>
-          {serverData.map(value => {
+          {serverData.map((value) => {
             return (
               <Accordion.Item key={value.id} eventKey={value.id}>
                 <Accordion.Header>{value.title}</Accordion.Header>
                 <Accordion.Body>test</Accordion.Body>
               </Accordion.Item>
             );
-          })
-          }
+          })}
         </Accordion>
       </DefaultRow>
     </DefaultContainer>

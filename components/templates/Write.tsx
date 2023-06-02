@@ -15,10 +15,10 @@ const Write = ({
   content
 }: {
   content: {
-    text: string,
-    id: string,
-    weather: string,
-    date: string
+    text: string | null,
+    id: string | null,
+    weather: string | null,
+    date: string | null
   } | null
 }) => {
   return (
