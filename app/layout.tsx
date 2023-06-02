@@ -1,4 +1,4 @@
-import "./global.css";
+import "./globals.css";
 import ReactQueryWrapper from "@/components/organisms/ReactQueryWrapper";
 import RecoilRootWrapper from "@/components/organisms/RecoilRootWrapper";
 import StyledComponentsRegistry from "../components/organisms/StyledComponentsRegistry";

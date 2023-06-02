@@ -6,8 +6,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { FormControl, FormControlProps } from "react-bootstrap";
-import { styled } from "styled-components";
+import { FormControl, FormControlProps, SSRProvider } from "react-bootstrap";
+import { ThemeProvider, styled } from "styled-components";
 
 interface InputOwnProps {
   /**
@@ -32,6 +32,14 @@ interface InputOwnProps {
    * initValue
    */
   initValue?: string;
+  /**
+   * backgroundColor
+   */
+  backgroundColor?: string;
+  /**
+   * placeholderColor
+   */
+  placeholderColor?: string;
 }
 
 type InputProps = InputOwnProps &
@@ -57,6 +65,7 @@ const CustomFormControl = styled(FormControl)`
   display: inline-block;
   border: 0;
   outline-width: 0;
+  color: ${(props) => props.theme.color};
   background-color: transparent;
   width: 100%;
   padding: 0;
@@ -66,7 +75,7 @@ const CustomFormControl = styled(FormControl)`
     background-color: transparent;
   }
   &::placeholder {
-    color: #afafaf;
+    color: ${(props) => props.theme.placeholderColor};
   }
 `;
 
@@ -85,6 +94,10 @@ export const CustomInput = forwardRef(
       initValue = "",
       onClearButtonClick,
       onChange,
+      as,
+      backgroundColor = "transparent",
+      color = "#000000",
+      placeholderColor = "#afafaf",
       ...props
     }: InputProps,
     ref: React.ForwardedRef<HTMLInputElement>
@@ -97,38 +110,58 @@ export const CustomInput = forwardRef(
       }
     }, [initValue]);
 
-    const wrapperStyle = {
-      borderBottom: "1px solid #000000",
-      paddingRight: `${clearButton ? "25px" : "0"}`,
+    const wrapperStyle =
+      as === "textarea"
+        ? {
+            padding: "5px",
+            borderRadius: "5px",
+            backgroundColor: backgroundColor,
+          }
+        : {
+            borderBottom: "1px solid #000000",
+            paddingRight: `${clearButton ? "25px" : "0"}`,
+            backgroundColor: backgroundColor,
+          };
+
+    const theme = {
+      color: color,
+      placeholderColor: placeholderColor,
     };
 
     return (
-      <div style={wrapperStyle}>
-        <CustomFormControl
-          ref={ref}
-          type={type}
-          placeholder={placeholder}
-          value={text}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setText(e.currentTarget.value);
-            if (onChange) onChange(e);
-          }}
-          {...props}
-        />
-        {clearButton && type !== "date" && text !== "" && (
-          <ClearButton
-            type="button"
-            tabIndex={-1}
-            ref={clearBtnRef}
-            onClick={(e) => {
-              setText("");
-              if (onClearButtonClick) onClearButtonClick(e);
-            }}
-          >
-            X
-          </ClearButton>
-        )}
-      </div>
+      <SSRProvider>
+        <div style={wrapperStyle}>
+          <ThemeProvider theme={theme}>
+            <CustomFormControl
+              ref={ref}
+              type={type}
+              placeholder={placeholder}
+              value={text}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setText(e.currentTarget.value);
+                if (onChange) onChange(e);
+              }}
+              as={as}
+              {...props}
+            />
+            {clearButton && type !== "date" && text !== "" && (
+              <ClearButton
+                type="button"
+                tabIndex={-1}
+                ref={clearBtnRef}
+                onClick={(
+                  e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                ) => {
+                  setText("");
+                  if (onClearButtonClick) onClearButtonClick(e);
+                }}
+              >
+                X
+              </ClearButton>
+            )}
+          </ThemeProvider>
+        </div>
+      </SSRProvider>
     );
   }
 );
