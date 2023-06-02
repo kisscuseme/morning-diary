@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { FormControl, FormControlProps, SSRProvider } from "react-bootstrap";
+import { FormControl, FormControlProps } from "react-bootstrap";
 import { ThemeProvider, styled } from "styled-components";
 
 interface InputOwnProps {
@@ -129,39 +129,35 @@ export const CustomInput = forwardRef(
     };
 
     return (
-      <SSRProvider>
-        <div style={wrapperStyle}>
-          <ThemeProvider theme={theme}>
-            <CustomFormControl
-              ref={ref}
-              type={type}
-              placeholder={placeholder}
-              value={text}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setText(e.currentTarget.value);
-                if (onChange) onChange(e);
+      <div style={wrapperStyle}>
+        <ThemeProvider theme={theme}>
+          <CustomFormControl
+            ref={ref}
+            type={type}
+            placeholder={placeholder}
+            value={text}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setText(e.currentTarget.value);
+              if (onChange) onChange(e);
+            }}
+            as={as}
+            {...props}
+          />
+          {clearButton && type !== "date" && text !== "" && (
+            <ClearButton
+              type="button"
+              tabIndex={-1}
+              ref={clearBtnRef}
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                setText("");
+                if (onClearButtonClick) onClearButtonClick(e);
               }}
-              as={as}
-              {...props}
-            />
-            {clearButton && type !== "date" && text !== "" && (
-              <ClearButton
-                type="button"
-                tabIndex={-1}
-                ref={clearBtnRef}
-                onClick={(
-                  e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                ) => {
-                  setText("");
-                  if (onClearButtonClick) onClearButtonClick(e);
-                }}
-              >
-                X
-              </ClearButton>
-            )}
-          </ThemeProvider>
-        </div>
-      </SSRProvider>
+            >
+              X
+            </ClearButton>
+          )}
+        </ThemeProvider>
+      </div>
     );
   }
 );

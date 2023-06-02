@@ -14,12 +14,14 @@ import { scheduleAccordionActiveState, selectedYearState } from "@/states/states
 import { CustomButton } from "../atoms/CustomButton";
 import { Accordion } from "react-bootstrap";
 import { accordionCustomStyle } from "../molecules/CustomMolecules";
+import { useRouter } from "next/navigation";
 
 export default function Diary({ serverData }: { serverData: any[] }) {
   const setSelectedYear = useSetRecoilState(selectedYearState);
   const [scheduleAccordionActive, setScheduleAccordionActive] = useRecoilState(
     scheduleAccordionActiveState
   );
+  const router = useRouter();
 
   // Dropdown에서 선택한 날짜를 recoil 전역 상태에 바인딩
   const selectYear = (year: string) => {
@@ -40,9 +42,7 @@ export default function Diary({ serverData }: { serverData: any[] }) {
       <DefaultRow>
         <DefaultCol>
           <CustomButton
-            onClick={() => {
-              window.location.href = "/write";
-            }}
+            onClick={() => {}}
           >
             {l("Write")}
           </CustomButton>
