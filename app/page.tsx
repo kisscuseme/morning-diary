@@ -14,7 +14,7 @@ const Home = () => {
           // 서버 인증에 필요한 토큰 값 저장
           setCookie("token", await data.getIdToken());
           // Diary 페이지 이동
-          window.location.replace("/diary");
+          window.location.replace("/list");
         } else {
           // 로그인이 안 되어 있는 경우 토큰 값 초기화
           setCookie("token", "", -1);

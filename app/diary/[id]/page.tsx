@@ -1,9 +1,10 @@
 import { admin } from "@/services/firebase/firebase.admin";
 import { cookies } from "next/dist/client/components/headers";
-import Home from "../page";
+import Home from "../../page";
+import { DiaryType } from "@/types/types";
 import Diary from "@/components/templates/Diary";
 
-const DiaryPage = async () => {
+const DiaryPage = async ({ params }: { params: { id: string } }) => {
   try {
     // firebase 서버 토큰 검증
     const token = await admin
@@ -11,20 +12,12 @@ const DiaryPage = async () => {
       .verifyIdToken(cookies().get("token")?.value || "");
     if (token.uid !== "") {
       // 서버로부터 데이터 가져오기 (추가 예정)
-      const serverData: any[] = [
-        {
-          id: 1,
-          title: "테스트 데이터",
-        },
-        {
-          id: 2,
-          title: "테스트 데이터2",
-        },
-        {
-          id: 3,
-          title: "테스트 데이터3",
-        },
-      ];
+      const serverData: DiaryType = {
+        id: params.id,
+        text: "테스트 데이터",
+        date: "2020-01-01",
+        weather: "Sunny",
+      };
       return <Diary serverData={serverData} />;
     } else {
       return (
