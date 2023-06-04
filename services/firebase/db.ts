@@ -25,16 +25,16 @@ const limitNumber = 15;
 
 // DB 루트 PATH
 const language: string = "KR";
-const dbRootPath: string = "language/" + language;
+const dbRootPath: string = "languages/" + language;
 
 // 데이터가 위치한 db path 생성
 const getFullPath = (uid: string) => {
-  return dbRootPath + "/user/" + uid + "/diary";
+  return dbRootPath + "/users/" + uid + "/diary";
 };
 
 // user db path 생성
 const getUserPath = () => {
-  return dbRootPath + "/user";
+  return dbRootPath + "/users";
 };
 
 

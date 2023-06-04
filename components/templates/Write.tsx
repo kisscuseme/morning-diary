@@ -13,7 +13,7 @@ import { DiaryType } from "@/types/types";
 import { Dispatch, SetStateAction } from "react";
 import { Form } from "react-bootstrap";
 import { TopBar } from "../molecules/TopBar";
-import { LanguageSelectorForClient } from "../organisms/LanguageSelectorForClient";
+import Menu from "../organisms/Menu";
 
 export default function Write({
   serverData,
@@ -25,7 +25,11 @@ export default function Write({
   return (
     <DefaultContainer>
       <TopBar>
-        <LanguageSelectorForClient />
+        <DefaultRow>
+          <DefaultCol>
+            <Menu />
+          </DefaultCol>
+        </DefaultRow>
       </TopBar>
       <DefaultTitle>
         {serverData

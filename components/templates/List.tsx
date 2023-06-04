@@ -16,7 +16,7 @@ import { NavLink, Row } from "react-bootstrap";
 import { accordionCustomStyle } from "../molecules/CustomMolecules";
 import { DiaryType } from "@/types/types";
 import { Dispatch, SetStateAction } from "react";
-import { LanguageSelectorForClient } from "../organisms/LanguageSelectorForClient";
+import Menu from "../organisms/Menu";
 
 export default function List({
   serverDataList,
@@ -36,11 +36,18 @@ export default function List({
     <DefaultContainer>
       <style>{accordionCustomStyle}</style>
       <TopBar>
-        <CustomDropdown
-          initText={getToday().substring(0, 4)}
-          items={getYearList()}
-          onClickItemHandler={selectYear}
-        />
+        <DefaultRow>
+          <DefaultCol>
+            <Menu />
+          </DefaultCol>
+          <DefaultCol>
+            <CustomDropdown
+              initText={getToday().substring(0, 4)}
+              items={getYearList()}
+              onClickItemHandler={selectYear}
+            />
+          </DefaultCol>
+        </DefaultRow>
       </TopBar>
       <DefaultTitle>{l("My Morning Stories")}</DefaultTitle>
       <DefaultRow>

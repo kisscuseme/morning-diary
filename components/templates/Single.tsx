@@ -7,13 +7,16 @@ import {
   DefaultRow,
   DefaultTitle,
 } from "@/components/atoms/DefaultAtoms";
-import { l } from "@/services/util/util";
+import { getToday, getYearList, l } from "@/services/util/util";
 import { DiaryType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 import { Form } from "react-bootstrap";
 import { TopBar } from "../molecules/TopBar";
 import { CustomDropdown } from "../atoms/CustomDropdown";
+import { useSetRecoilState } from "recoil";
+import { selectedYearState } from "@/states/states";
+import Menu from "../organisms/Menu";
 
 export default function Single({
   serverData,
@@ -22,16 +25,29 @@ export default function Single({
   serverData: DiaryType;
   setEditMode: Dispatch<SetStateAction<boolean>>;
 }) {
+  const setSelectedYear = useSetRecoilState(selectedYearState);
   const router = useRouter();
+
+  // Dropdown에서 선택한 날짜를 recoil 전역 상태에 바인딩
+  const selectYear = (year: string) => {
+    setSelectedYear(year);
+  };
 
   return (
     <DefaultContainer>
       <TopBar>
-        <CustomDropdown
-          initText={""}
-          items={[]}
-          onClickItemHandler={() => {}}
-        />
+        <DefaultRow>
+          <DefaultCol>
+            <Menu />
+          </DefaultCol>
+          <DefaultCol>
+            <CustomDropdown
+              initText={getToday().substring(0, 4)}
+              items={getYearList()}
+              onClickItemHandler={selectYear}
+            />
+          </DefaultCol>
+        </DefaultRow>
       </TopBar>
       <DefaultTitle>{l("Shall we recall the memories?")}</DefaultTitle>
       <Form>
