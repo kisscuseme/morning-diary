@@ -1,20 +1,24 @@
 "use client";
 
 import { DiaryType } from "@/types/types";
-import Single from "./Single";
 import { useState } from "react";
+import List from "./List";
 import Write from "./Write";
 import TranslationFromClient from "../organisms/TranslationFromClient";
 
-export default function Diary({ serverData }: { serverData: DiaryType }) {
+export default function Main({
+  serverDataList,
+}: {
+  serverDataList: DiaryType[];
+}) {
   const [editMode, setEditMode] = useState(false);
   return (
     <>
       <TranslationFromClient />
       {editMode ? (
-        <Write serverData={serverData} setEditMode={setEditMode} />
+        <Write setEditMode={setEditMode} />
       ) : (
-        <Single serverData={serverData} setEditMode={setEditMode} />
+        <List serverDataList={serverDataList} setEditMode={setEditMode} />
       )}
     </>
   );

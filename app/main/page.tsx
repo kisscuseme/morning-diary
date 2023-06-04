@@ -1,9 +1,10 @@
 import { admin } from "@/services/firebase/firebase.admin";
 import { cookies } from "next/dist/client/components/headers";
 import Home from "../page";
-import List from "@/components/templates/List";
+import Main from "@/components/templates/Main";
+import { DiaryType } from "@/types/types";
 
-const ListPage = async () => {
+const MainPage = async () => {
   try {
     // firebase 서버 토큰 검증
     const token = await admin
@@ -11,21 +12,21 @@ const ListPage = async () => {
       .verifyIdToken(cookies().get("token")?.value || "");
     if (token.uid !== "") {
       // 서버로부터 데이터 가져오기 (추가 예정)
-      const serverData: any[] = [
+      const serverDataList: DiaryType[] = [
         {
-          id: 1,
+          id: "1",
           title: "테스트 데이터",
         },
         {
-          id: 2,
+          id: "2",
           title: "테스트 데이터2",
         },
         {
-          id: 3,
+          id: "3",
           title: "테스트 데이터3",
         },
       ];
-      return <List serverData={serverData} />;
+      return <Main serverDataList={serverDataList} />;
     } else {
       return (
         // 인증 정보 없을 경우 기본 값
@@ -44,4 +45,4 @@ const ListPage = async () => {
   }
 };
 
-export default ListPage;
+export default MainPage;

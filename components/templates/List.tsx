@@ -9,22 +9,23 @@ import {
 } from "../atoms/DefaultAtoms";
 import { TopBar } from "../molecules/TopBar";
 import { CustomDropdown } from "../atoms/CustomDropdown";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  scheduleAccordionActiveState,
-  selectedYearState,
-} from "@/states/states";
+import { useSetRecoilState } from "recoil";
+import { selectedYearState } from "@/states/states";
 import { CustomButton } from "../atoms/CustomButton";
-import { Accordion, NavLink, Row } from "react-bootstrap";
+import { NavLink, Row } from "react-bootstrap";
 import { accordionCustomStyle } from "../molecules/CustomMolecules";
-import { useRouter, useSearchParams } from "next/navigation";
+import { DiaryType } from "@/types/types";
+import { Dispatch, SetStateAction } from "react";
+import { LanguageSelectorForClient } from "../organisms/LanguageSelectorForClient";
 
-export default function List({ serverData }: { serverData: any[] }) {
+export default function List({
+  serverDataList,
+  setEditMode,
+}: {
+  serverDataList: DiaryType[];
+  setEditMode: Dispatch<SetStateAction<boolean>>;
+}) {
   const setSelectedYear = useSetRecoilState(selectedYearState);
-  const [scheduleAccordionActive, setScheduleAccordionActive] = useRecoilState(
-    scheduleAccordionActiveState
-  );
-  const router = useRouter();
 
   // Dropdown에서 선택한 날짜를 recoil 전역 상태에 바인딩
   const selectYear = (year: string) => {
@@ -46,27 +47,18 @@ export default function List({ serverData }: { serverData: any[] }) {
         <DefaultCol>
           <CustomButton
             onClick={() => {
-              const params = new URLSearchParams();
-              params.set("text", "content123");
-              params.set("title", "title123");
-              params.set("weather", "sunny");
-              params.set("id", "12312312");
-              params.set("date", "2023-01-01");
-              const url = "/write?" + params.toString();
-              router.push(url);
+              setEditMode(true);
             }}
           >
             {l("Write")}
           </CustomButton>
         </DefaultCol>
       </DefaultRow>
-      {serverData.map((value) => {
+      {serverDataList.map((value) => {
         return (
-          <Row key={value.id}>
+          <Row key={value?.id}>
             <DefaultCol>
-              <NavLink href={`/diary/${value.id}`}>
-                {value.title}
-              </NavLink>
+              <NavLink href={`/diary/${value?.id}`}>{value?.title}</NavLink>
             </DefaultCol>
           </Row>
         );

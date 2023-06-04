@@ -36,8 +36,9 @@ export type WhereConfigType = {
 };
 
 export type DiaryType = {
-  text: string | null;
-  id: string | null;
-  weather: string | null;
-  date: string | null;
+  title?: string;
+  text?: string;
+  id?: string;
+  weather?: string;
+  date?: string;
 } | null;
